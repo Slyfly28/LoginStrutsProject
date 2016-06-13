@@ -4,9 +4,10 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Error</title>
+<title>Failed Update</title>
 </head>
 <body>
-	Wrong user name or password provided.
+<h1>Failed to Update. Please try again.</h1>
+<a href="register.jsp">Try Again</a>
 </body>
 </html>

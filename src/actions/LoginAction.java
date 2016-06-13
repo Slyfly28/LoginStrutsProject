@@ -3,45 +3,73 @@ package actions;
 import java.sql.*;
 
 public class LoginAction {
+	private int accountId;
 	private String username;
 	private String password;
 	private String name;
 	private String address;
 	private String pnumber;
 	private String ssn;
-	
-	public String execute() {
-	      String ret = "error";
+
+
+	public String execute() 
+	{  
+		  String ret = "error"; // set return value for execute method
 	      Connection conn = null;
-
-	      try {
-	         String URL = "jdbc:mysql://localhost:3306/strutdb";
-	         Class.forName("com.mysql.jdbc.Driver");
-	         conn = DriverManager.getConnection(URL, "root", "root123");
-	         String sql = "SELECT name FROM accounts WHERE";
+	     
+	      try 
+	      {
+	         String URL = "jdbc:mysql://localhost:3306/strutdb"; // Connection string for MySQL where localhost:3306 is the port number and strutdb is the name of database.
+	         String user = "root"; // set user for MySQL
+		     String pass = "root123"; // set password for MySQL
+	         
+		     Class.forName("com.mysql.jdbc.Driver"); // set call name
+	         conn = DriverManager.getConnection(URL, user, pass); // setup connection string
+	         
+	         String sql = "SELECT * FROM accounts WHERE"; // prepare the query; selecting all the columns of the matched username and password.
 	         sql+=" username = ? AND password = ?";
-	         PreparedStatement ps = conn.prepareStatement(sql);
-	         ps.setString(1, username);
-	         ps.setString(2, password);
-	         ResultSet rs = ps.executeQuery();
+	         
+	         PreparedStatement ps = conn.prepareStatement(sql); // invoke query into the statement
+	         ps.setString(1, username); // set the first parameter as the username passed from the form index.jsp.
+	         ps.setString(2, password); // set the second paramet as the password passed also from the form in index.jsp
+	         
+	         ResultSet rs = ps.executeQuery(); // instantiate the resultset
 
-	         while (rs.next()) {
-	            name = rs.getString(1);
+	         while (rs.next()) // iterate through the result set
+	         {
+	        	 //set each values to respective columns.
+	        	setAccountId(rs.getInt(1)); 
+	            username = rs.getString(2);
+	            password = rs.getString(3);
+	            name = rs.getString(4);
+	            address = rs.getString(5);
+	            pnumber = rs.getString(6);
+	            ssn = rs.getString(7);
+	            
 	            ret = "success";
 	         }
-	      } catch (Exception e) {
-	         ret = "error";
-	      } finally {
-	         if (conn != null) {
-	            try {
+	      } 
+	      catch (Exception e) 
+	      {
+	    	ret = "error"; // error appears, set return to "error"
+	      } 
+	      finally // closing the connection.
+	      {
+	         if (conn != null) 
+	         {
+	            try 
+	            {
 	               conn.close();
-	            } catch (Exception e) {
+	            } 
+	            catch (Exception e) 
+	            {
 	            }
 	         }
 	      }
+	      
 	      return ret;
 	   }
-
+	//getter and setters
 	public String getUsername() {
 		return username;
 	}
@@ -89,5 +117,14 @@ public class LoginAction {
 	public void setSsn(String ssn) {
 		this.ssn = ssn;
 	}
+
+	public int getAccountId() {
+		return accountId;
+	}
+
+	public void setAccountId(int accountId) {
+		this.accountId = accountId;
+	}
+	
 
 }
